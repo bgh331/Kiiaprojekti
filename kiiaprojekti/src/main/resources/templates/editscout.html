@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Scoutlist</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" >
+</head>
+<body>
+	<h1>Muokkaa partiolaista</h1>
+	<div>
+		<form th:object="${scout}" th:action="@{../save}" action="#" method="post">
+			
+			<label for="id"></label>
+		  	<input type="hidden" id="id" th:field="*{id}" readonly="readonly" />
+			<label for="name">Nimi</label> <input type="text" id="name"
+				th:field="*{name}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<label for="age">Ikä</label> <input type="text" id="age"
+				th:field="*{age}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<label for="parent">Vanhempi</label> <input type="text" id="parent"
+				th:field="*{parent}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<label for="email">Email</label> <input type="text" id="email"
+				th:field="*{email}" />
+				<div style="clear: both; display: block; height: 10px;"></div>
+			<label for="phone">Puhelin nro.</label> <input type="text" id="phone"
+				th:field="*{phone}" />
+
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<input type="submit" value="Save"></input> <select id="agegrouplist"
+				th:field="*{agegroup}" class="form-control">
+				<option th:each="agegroup: ${agegroups}"
+					th:value="${agegroup.agegroupId}" th:text="${agegroup.name}"></option>
+			</select>
+		</form>
+	</div>
+</body>
+</html>

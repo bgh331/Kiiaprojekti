@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Scoutlist</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+
+  <link rel='stylesheet' type='text/css' href='libs/css/smoothness/jquery-ui-1.8.11.custom.css' />
+  <link rel='stylesheet' type='text/css' href='jquery.weekcalendar.css' />
+ 
+</head>
+<body>
+	<h1 class="p-3 mb-2 bg-primary text-white text-center">Kalasataman Fisut Lippukunta</h1>
+	<div>
+	
+	<div  style="padding:20px 0">
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+		</form>
+	</div>
+	<h3 class="text-center" th:inline="text" sec:authorize="hasAuthority('ADMIN')" >Tervetuloa [[${#httpServletRequest.remoteUser}]]</h3>
+		
+		<h3 class="text-center" th:inline="text" sec:authorize="hasAuthority('USER')" >Tervetuloa mukaan partioon [[${#httpServletRequest.remoteUser}]]!</h3>
+		
+		<p class="text-center" sec:authorize="hasAuthority('USER')">
+		Partio on hauska, monipuolinen ja hyödyllinen harrastus lapselle.<br>
+		Partio tarjoaa paljon mukavaa tekemistä, kuten yhdessä leikkimistä,<br>
+		pelaamista, uusien taitojen oppimista sekä retkiä ja leirejä. <br>
+		 Partio on harrastus, joka on täynnä ystävyyttä, naurua ja unohtumattomia elämyksiä!</p>
+		
+	</div>
+	
+
+	
+	<h1 class="text-center" sec:authorize="hasAuthority('USER')">Ilmoittaudu siis mukaan alta!</h1>
+	<h1 class="text-center" sec:authorize="hasAuthority('ADMIN')">Lisää uusi partiolainen</h1>
+	<div>
+		<form th:object="${scout}" th:action="@{save}" action="#" method="post">
+			<div class="form-row">
+			
+			<div class="form-group col-md-6">
+			<label for="name">Nimi</label> <input class="form-control" type="text" id="name"
+				value="name" th:field="*{name}" />
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<div class="form-group col-md-6">
+			<label for="age">Ikä</label> <input class="form-control"  type="text" id="age"
+				th:field="*{age}" />
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<div  class="form-group col-md-6">
+			<label for="parent">Vanhempi</label> <input class="form-control"  type="text" id="parent"
+				th:field="*{parent}" />
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<div  class="form-group col-md-6">
+			<label for="email">Sähköposti</label> <input  class="form-control" type="text" id="email"
+				th:field="*{email}" />
+			</div>	
+				
+				<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<div  class="form-group col-md-6">
+			<label for="phone" >Puhelin nro.</label> <input class="form-control" type="text" id="phone"
+				th:field="*{phone}" />
+				</div>
+				<div style="clear: both; display: block; height: 10px;"></div>
+			<select class="form-control" id="agegrouplist" th:field="*{agegroup}"  >
+			<option  th:each="agegroup: ${agegroups}" th:value="${agegroup.agegroupId}" 
+			th:text="${agegroup.name}"></option></select>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<input type="submit"class="btn btn-success"  value="Ilmoittaudu"></input> 
+			
+		</form>
+	</div>
+		<div style="clear: both; display: block; height: 10px;"></div>
+		<div style="clear: both; display: block; height: 10px;"></div>
+	<p sec:authorize="hasAuthority('USER')">Ilmoitamma sinulle mahdollisimman pian mikäli lapsesi/sinä mahdutte mukaan!</p>
+
+	<div style="clear: both; display: block; height: 10px;"></div>
+	<table class="table table-striped">
+		<tr>
+			<th>Nimi</th>
+			<th>Ikä</th>
+			<th>Vanhempi</th>
+			<th>Email</th>
+			<th>Puhelin</th>
+			<th></th>
+			<th sec:authorize="hasAuthority('ADMIN')"> </th>
+			
+			 
+		</tr>
+		<tr th:each="scout : ${scouts}">
+			<td th:text="${scout.name}"></td>
+			<td th:text="${scout.age}"></td>
+			<td th:text="${scout.parent}"></td>
+			<td th:text="${scout.email}"></td>
+			<td th:text="${scout.phone}"></td>
+
+			<td th:text="${scout.agegroup.name}"></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${scout.id})}"
+				class="btn btn-danger">Poista</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/edit/{id}(id=${scout.id})}"
+				class="btn btn-primary">Muokkaa</a></td>
+		</tr>
+	</table>
+
+		
+		
+	
+	
+</body>
+</html>
